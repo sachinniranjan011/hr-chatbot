@@ -1,0 +1,11 @@
+langchain
+fastapi
+uvicorn
+python-dotenv
+chromadb
+sentence-transformers
+ibm-watsonx-ai
+pypdf
+python-docx
+tiktoken
+pytest
