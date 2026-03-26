@@ -50,3 +50,11 @@ def health() -> dict[str, str]:
 @app.get("/")
 def read_root() -> dict[str, str]:
     return {"message": "HR Policy Chatbot API is running."}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    import os
+
+    port = int(os.environ.get("PORT", 10000))
+    uvicorn.run("backend_api.app.main:app", host="0.0.0.0", port=port)

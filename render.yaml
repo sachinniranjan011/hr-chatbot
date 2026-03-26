@@ -2,14 +2,8 @@ services:
   - type: web
     name: hr-chatbot
     runtime: python
-    plan: starter
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn backend_api.app.main:app --host 0.0.0.0 --port $PORT
-    healthCheckPath: /health
-    disk:
-      name: hr-chatbot-embeddings
-      mountPath: /opt/render/project/src/embeddings
-      sizeGB: 1
+    startCommand: uvicorn backend_api.app.main:app --host 0.0.0.0 --port 10000
     envVars:
       - key: WATSONX_API_KEY
         sync: false
@@ -20,4 +14,6 @@ services:
       - key: EMBEDDING_MODEL
         value: sentence-transformers/all-MiniLM-L6-v2
       - key: CHROMA_PERSIST_DIRECTORY
-        value: /opt/render/project/src/embeddings
+        value: ./embeddings
+      - key: PORT
+        value: "10000"
