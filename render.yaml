@@ -2,8 +2,14 @@ services:
   - type: web
     name: hr-chatbot
     runtime: python
+    plan: starter
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn backend_api.app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    disk:
+      name: hr-chatbot-embeddings
+      mountPath: /opt/render/project/src/embeddings
+      sizeGB: 1
     envVars:
       - key: WATSONX_API_KEY
         sync: false

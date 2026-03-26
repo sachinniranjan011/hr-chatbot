@@ -3,7 +3,7 @@ from pathlib import Path
 import chromadb
 from docx import Document
 from fastapi.testclient import TestClient
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from backend_api.app.main import app
 from backend_api.app.services import rag_service
@@ -89,8 +89,9 @@ def test_answer_hr_question_uses_mocked_watsonx(tmp_path: Path, monkeypatch) -> 
 
     class FakeWatsonxLLM:
         def generate(self, prompt: str) -> str:
-            assert "You are an HR assistant. Use the context below to answer." in prompt
-            assert "Question: what is the leave policy" in prompt
+            assert "You are an expert HR Policy Assistant" in prompt
+            assert "EMPLOYEE QUESTION:" in prompt
+            assert "what is the leave policy" in prompt
             assert "Employees receive 20 days of annual leave each year." in prompt
             return "Employees receive 20 days of annual leave each year."
 
