@@ -42,12 +42,27 @@ def _as_list(vector) -> list[float]:
     return list(vector)
 
 
+def _get_chroma_collection():
+    try:
+        client = chromadb.PersistentClient(
+            path=settings.chroma_persist_directory
+        )
+        return client.get_collection(name=COLLECTION_NAME)
+    except Exception as e:
+        print(f"Warning: ChromaDB collection not found: {e}")
+        return None
+
+
 def answer_hr_question(question: str) -> str:
+    collection = _get_chroma_collection()
+    if collection is None:
+        return (
+            "HR policy documents are not loaded yet. "
+            "Please contact your administrator."
+        )
+
     if _is_greeting(question):
         return "Hello! I'm your HR Policy Assistant. Feel free to ask me anything about HR policies."
-
-    client = chromadb.PersistentClient(path=settings.chroma_persist_directory)
-    collection = client.get_collection(name=COLLECTION_NAME)
 
     embedding_model = SentenceTransformer(
         _normalize_embedding_model(settings.embedding_model)
